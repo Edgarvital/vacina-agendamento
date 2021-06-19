@@ -82,65 +82,10 @@
                                     </div>
 
                                 @endif
-                                @foreach ($publicos as $publico)
-                                    @auth
-                                        @include('includes.exibirPublico', $publico)
-                                    @else
-                                        @if ($publico->exibir_no_form)
-                                            @if ($publico->tipo == $tipos[0] || $publico->tipo == $tipos[1])
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio"
-                                                           id="publico_{{$publico->id}}" name="público"
-                                                           value="{{$publico->id}}"
-                                                           @if(old('público') == $publico->id) checked @endif required>
-                                                    <label class="form-check-label style_titulo_input"
-                                                           for="publico_{{$publico->id}}">{{mb_strtoupper($publico->texto)}}</label>
-                                                </div>
-                                            @elseif ($publico->tipo == $tipos[2])
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio"
-                                                           id="publico_{{$publico->id}}" name="público"
-                                                           value="{{$publico->id}}"
-                                                           @if(old('público') == $publico->id) checked @endif required>
-                                                    <label class="form-check-label style_titulo_input"
-                                                           for="publico_{{$publico->id}}">{{mb_strtoupper($publico->texto)}}</label>
 
-                                                    <div id="divPublico_{{$publico->id}}" @if (old('público') == $publico->id) style="display: block;"
-                                                         @else style="display: none;" @endif>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <label for="inputProfissao"
-                                                                       class="style_titulo_input"
-                                                                       style="font-weight: normal;">Qual tipo
-                                                                    de {{mb_strtolower($publico->texto)}}</label>
-                                                                <select class="form-control"
-                                                                        id="publico_opcao_{{$publico->id}}"
-                                                                        name="publico_opcao_{{$publico->id}}">
-                                                                    <option value="" seleceted disabled>-- Selecione
-                                                                        o tipo --
-                                                                    </option>
-                                                                    @foreach ($publico->opcoes()->orderBy('opcao')->get() as $opcao)
-                                                                        @if($publico->inicio_intervalo == 18)
-                                                                            @if ($opcao->opcao != "Gestantes e puérperas" )
-                                                                                <option
-                                                                                    value="{{$opcao->id}}"
-                                                                                    @if(old('publico_opcao_'.$publico->id) == $opcao->id) selected @endif>{{$opcao->opcao}}</option>
-                                                                            @endif
-                                                                        @else
-                                                                            <option
-                                                                                value="{{$opcao->id}}"
-                                                                                @if(old('publico_opcao_'.$publico->id) == $opcao->id) selected @endif>{{$opcao->opcao}}</option>
-                                                                        @endif
-                                                                    @endforeach
-                                                                </select>
-                                                                {{-- <small>Obs.: Lista conforme OFÍCIO CIRCULAR Nº 57/2021/SVS/MS do Ministério da Saúde, de 12 de março de 2021.</small> --}}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        @endif
-                                    @endauth
+                            <!-- Exibe os Publicos no Formulario -->
+                                @foreach ($publicos as $publico)
+                                    @include('includes.exibirPublico', $publico)
                                 @endforeach
                                 @if (old('público') != null)
                                     @error('público')
@@ -149,6 +94,7 @@
                                     </div>
                                     @enderror
                                 @endif
+
                                 <br>
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
@@ -615,7 +561,7 @@
     <!--x rodapé x-->
     @if ( old('público') != null)
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 var radio = document.getElementById('publico_{{old('público')}}');
                 postoPara(radio, radio.value);
             });
@@ -623,26 +569,26 @@
     @endif
     @if (env('ATIVAR_FILA', false) == true)
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 $('input:radio[name=público]').change(
-                    function() {
+                    function () {
                         var inputs = document.getElementsByName('público');
                         for (var i = 0; i < inputs.length; i++) {
                             //  console.log(this);
                             // console.log(this.value);
-                            if (document.getElementById("divPublico_"+inputs[i].value)) {
-                                var div = document.getElementById("divPublico_"+inputs[i].value);
-                                var select = document.getElementById("publico_opcao_"+inputs[i].value);
-                                if(div.style.display == "none" && inputs[i].value == this.value){
+                            if (document.getElementById("divPublico_" + inputs[i].value)) {
+                                var div = document.getElementById("divPublico_" + inputs[i].value);
+                                var select = document.getElementById("publico_opcao_" + inputs[i].value);
+                                if (div.style.display == "none" && inputs[i].value == this.value) {
                                     div.style.display = "block";
                                     select.value = "";
-                                }else{
+                                } else {
                                     div.style.display = "none";
                                     select.value = "";
                                 }
                             }
-                            if (document.getElementById("divOutrasInformacoes_"+inputs[i].value)) {
-                                var div = document.getElementById("divOutrasInformacoes_"+inputs[i].value);
+                            if (document.getElementById("divOutrasInformacoes_" + inputs[i].value)) {
+                                var div = document.getElementById("divOutrasInformacoes_" + inputs[i].value);
                                 if (div.style.display == "none" && inputs[i].value == this.value) {
                                     div.style.display = "block";
                                 } else {
@@ -658,26 +604,26 @@
         </script>
     @else
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 $('input:radio[name=público]').change(
-                    function() {
+                    function () {
                         var inputs = document.getElementsByName('público');
                         for (var i = 0; i < inputs.length; i++) {
                             //  console.log(this);
                             // console.log(this.value);
-                            if (document.getElementById("divPublico_"+inputs[i].value)) {
-                                var div = document.getElementById("divPublico_"+inputs[i].value);
-                                var select = document.getElementById("publico_opcao_"+inputs[i].value);
-                                if(div.style.display == "none" && inputs[i].value == this.value){
+                            if (document.getElementById("divPublico_" + inputs[i].value)) {
+                                var div = document.getElementById("divPublico_" + inputs[i].value);
+                                var select = document.getElementById("publico_opcao_" + inputs[i].value);
+                                if (div.style.display == "none" && inputs[i].value == this.value) {
                                     div.style.display = "block";
                                     select.value = "";
-                                }else{
+                                } else {
                                     div.style.display = "none";
                                     select.value = "";
                                 }
                             }
-                            if (document.getElementById("divOutrasInformacoes_"+inputs[i].value)) {
-                                var div = document.getElementById("divOutrasInformacoes_"+inputs[i].value);
+                            if (document.getElementById("divOutrasInformacoes_" + inputs[i].value)) {
+                                var div = document.getElementById("divOutrasInformacoes_" + inputs[i].value);
                                 if (div.style.display == "none" && inputs[i].value == this.value) {
                                     div.style.display = "block";
                                 } else {
@@ -695,14 +641,14 @@
 
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (function() {
+        (function () {
             'use strict';
-            window.addEventListener('load', function() {
+            window.addEventListener('load', function () {
                 // Fetch all the forms we want to apply custom Bootstrap validation styles to
                 var forms = document.getElementsByClassName('needs-validation');
                 // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                    form.addEventListener('submit', function(event) {
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
                         if (form.checkValidity() === false) {
                             event.preventDefault();
                             event.stopPropagation();
@@ -718,8 +664,8 @@
     <script>
         const buttonSend = document.getElementById('buttonSend');
         const formSolicitar = document.getElementById('formSolicitar');
-        if(buttonSend){
-            buttonSend.addEventListener('click', (e)=>{
+        if (buttonSend) {
+            buttonSend.addEventListener('click', (e) => {
                 e.target.innerText = "Aguarde...";
                 e.target.setAttribute("disabled", "disabled");
                 formSolicitar.submit()
@@ -727,22 +673,22 @@
         }
         var inputEmail = document.getElementById('inputEmail');
         var inputMessage = document.getElementById('inputMessage');
-        inputEmail.addEventListener('change', (e)=>{
+        inputEmail.addEventListener('change', (e) => {
             console.log(e.target.value);
             var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
             console.log(pattern.test(e.target.value));
             var bool = pattern.test(e.target.value);
-            if(bool){
+            if (bool) {
                 inputMessage.setAttribute('class', 'valid-feedback')
                 inputMessage.innerText = 'E-mail válido!';
-                inputEmail.classList.add( 'is-valid')
-                inputEmail.classList.remove( 'is-invalid')
+                inputEmail.classList.add('is-valid')
+                inputEmail.classList.remove('is-invalid')
                 inputMessage.style.display = 'block';
-            }else{
+            } else {
                 inputMessage.setAttribute('class', 'invalid-feedback')
                 inputMessage.innerText = 'E-mail inválido!';
-                inputEmail.classList.remove( 'is-valid')
-                inputEmail.classList.add( 'is-invalid')
+                inputEmail.classList.remove('is-valid')
+                inputEmail.classList.add('is-invalid')
                 inputMessage.style.display = 'block';
             }
         });
@@ -751,15 +697,16 @@
 
     <script>
         function checkbox_visibilidade(div_alvo, checkbox) {
-            if(checkbox.checked) {
+            if (checkbox.checked) {
                 div_alvo.style.display = "block";
             } else {
                 div_alvo.style.display = "none";
             }
         }
+
         function buscar_CEP(input, evt) {
             let theEvent = evt || window.event;
-            if(evt.keyCode == 8) {
+            if (evt.keyCode == 8) {
                 theEvent.returnValue = true;
                 return;
             }
@@ -771,18 +718,18 @@
                 key = String.fromCharCode(key);
             }
             var regex = /[0-9]|\./;
-            if( !regex.test(key) ) {
+            if (!regex.test(key)) {
                 theEvent.returnValue = false;
-                if(theEvent.preventDefault) theEvent.preventDefault();
+                if (theEvent.preventDefault) theEvent.preventDefault();
                 return;
             }
             /* enquanto não tiver suficiente, deixa preencher */
-            if(input.value.length < 7) {
+            if (input.value.length < 7) {
                 theEvent.returnValue = true;
                 return;
             }
             /* caso já esteja preenchido, não adiciona mais numeros */
-            if(input.value.length === 8) {
+            if (input.value.length === 8) {
                 theEvent.returnValue = false;
                 return;
             }
@@ -792,16 +739,21 @@
             let cep = input.value + key;
             requisitar_preenchimento_cep(cep);
         }
+
         function requisitar_preenchimento_cep(cep) {
-            if(!cep) {return;}
+            if (!cep) {
+                return;
+            }
             cep = cep.match(/\d+/g, '').join("");
-            if(cep.length != 8) {return;}
+            if (cep.length != 8) {
+                return;
+            }
             let url = window.location.toString().replace("solicitar", "cep/" + cep);
             /* console.log(url); */
             fetch(url).then((resposta) => {
                 return resposta.json();
             }).then((json) => {
-                if(json.resultado != 1) {
+                if (json.resultado != 1) {
                     /* todo: erro */
                     return;
                 }
@@ -810,17 +762,19 @@
                 document.getElementById("inputrua").value = json.tipo_logradouro + " " + json.logradouro;
             });
         }
-        function funcaoVinculoComAEquipeDeSaudade(input){
-            if(document.getElementById("id_div_nomeDaUnidade").style.display == "none"){
+
+        function funcaoVinculoComAEquipeDeSaudade(input) {
+            if (document.getElementById("id_div_nomeDaUnidade").style.display == "none") {
                 document.getElementById("id_div_nomeDaUnidade").style.display = "block";
                 document.getElementById("inputNomeUnidade").value = "";
-            }else{
+            } else {
                 document.getElementById("id_div_nomeDaUnidade").style.display = "none";
                 document.getElementById("inputNomeUnidade").value = "";
                 document.getElementById("inputNomeUnidade").placeholder = "Digite o nome da sua unidade (caso tenha vínculo)";
             }
             postoPara(input);
         }
+
         /* function funcaoMostrarOpcoes(input, id) {
             var div = document.getElementById("divPublico_"+id);
             var select = document.getElementById("publico_opcao_"+id);
@@ -842,7 +796,7 @@
             //  console.log(url);
             /* Mágia de programação funcional */
             fetch(url).then((dados) => {
-                if(dados.status != 200) {
+                if (dados.status != 200) {
                     div_seletor_horararios.innerHTML = "Ocorreu um erro, tente novamente mais tarde";
                 } else {
                     return dados.body;
@@ -852,7 +806,7 @@
                 return new ReadableStream({
                     start(controller) {
                         function push() {
-                            reader.read().then( ({done, value}) => {
+                            reader.read().then(({done, value}) => {
                                 if (done) {
                                     controller.close();
                                     return;
@@ -861,15 +815,17 @@
                                 push();
                             })
                         }
+
                         push();
                     }
                 });
             }).then(stream => {
-                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+                return new Response(stream, {headers: {"Content-Type": "text/html"}}).text();
             }).then(result => {
                 div_seletor_horararios.innerHTML = result;
             });
         }
+
         function selecionar_dia_vacinacao(select_dia) {
             Array.from(document.getElementsByClassName("seletor_horario_dia_div")).forEach((div) => {
                 div.style.display = "none";
@@ -877,7 +833,9 @@
                 select_horarios.name = "";
                 select_horarios.required = false;
             });
-            if(!select_dia.value) {return;}
+            if (!select_dia.value) {
+                return;
+            }
             let div = document.getElementById("seletor_horario_dia_" + select_dia.value);
             let select_horarios = div.children[0].children[0].children[1];
             div.style.display = "block";
@@ -885,6 +843,7 @@
             select_horarios.id = "horario_vacinacao";
             select_horarios.required = true;
         }
+
         function postoPara(input, id) {
             valor = input.checked;
             var btnForm = document.getElementById('buttonSend');
@@ -907,17 +866,17 @@
                     }
                 },
                 statusCode: {
-                    404: function() {
+                    404: function () {
                         alert("Nenhum posto encontrado");
                         btnForm.disabled = false;
                     },
-                    500: function() {
+                    500: function () {
                         btnForm.disabled = false;
                     }
                 },
-                success: function(data){
+                success: function (data) {
                     //  console.log( data)
-                    if(data.length <= 0 && data != null){
+                    if (data.length <= 0 && data != null) {
                         console.log('posto');
                         const buttonSend = document.getElementById('buttonSend');
                         buttonSend.innerText = "Enviar para fila de Espera";
@@ -927,9 +886,9 @@
                         document.getElementById("alerta_vacinas").style.display = "block";
                         loading.style.display = "none";
                         /* alert('Não existe vacinas para esse público, se continuar o preenchimento você irá para a fila de espera') */
-                    }else{
+                    } else {
                         document.getElementById("alerta_vacinas").style.display = "none";
-                        if(document.getElementById("input_fila") != null){
+                        if (document.getElementById("input_fila") != null) {
                             document.getElementById("input_fila").remove();
                         }
                         buttonSend.innerText = "Enviar";
@@ -939,7 +898,7 @@
                     if (data != null && typeof data != 'string') {
                         var option = '<option selected disabled>-- Selecione o posto --</option>';
                         if (data.length > 0) {
-                            $.each(data, function(i, obj) {
+                            $.each(data, function (i, obj) {
                                 option += '<option value="' + obj.id + '">' + obj.nome + '</option>';
                             })
                         }
