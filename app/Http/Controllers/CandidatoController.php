@@ -190,7 +190,6 @@ class CandidatoController extends Controller
         if(env('ATIVAR_FILA') == true || env('ATIVAR_FILA') == null){
             $request->merge(['fila' => "true"]);
         }
-        dd($request->all());
         $request->validate([
             "voltou"                => "nullable",
             "público"               => "required",
