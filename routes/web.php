@@ -77,6 +77,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/admin/form',  [AdminController::class, 'userForm'])->name('admin.form.user');
     Route::post('/admin/create/user',  [AdminController::class, 'createUser'])->name('admin.create.user');
+    Route::get('/user/alterarSenha',  [\App\Http\Controllers\Auth\RegisteredUserController::class, 'alterarSenha'])->name('user.alterarSenha');
+    Route::post('/user/updateSenha',  [\App\Http\Controllers\Auth\RegisteredUserController::class, 'updateSenha'])->name('user.update_senha');
     Route::get('/dashboard',  [CandidatoController::class, 'show'])->name('dashboard');
     Route::post("/agendamento/{id}/confirmacao", [CandidatoController::class, 'update'])->name("update.agendamento");
     Route::post("/agendamento/{id}/confirmar-vacinacao", [CandidatoController::class, 'vacinado'])->name('candidato.vacinado');
